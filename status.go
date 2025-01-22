@@ -83,7 +83,7 @@ func main() {
 		deny(w)
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":"+os.Args[1], nil))
 }
 
 func deny(w http.ResponseWriter) {
