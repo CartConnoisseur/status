@@ -83,6 +83,23 @@ func main() {
 		deny(w)
 	})
 
+	http.HandleFunc("/generate-hash", func(w http.ResponseWriter, r *http.Request) {
+		username, password, ok := r.BasicAuth()
+		if ok {
+			hash, err := bcrypt.GenerateFromPassword([]byte(username+password), 0)
+			if err != nil {
+				http.Error(w, "Failed to generate hash", http.StatusInternalServerError)
+				return
+			}
+
+			log.Print(string(hash))
+			w.Write([]byte("Hash successfully generated (output to server log for some semblance of security)"))
+			return
+		}
+
+		deny(w)
+	})
+
 	log.Fatal(http.ListenAndServe(":"+os.Args[1], nil))
 }
 
