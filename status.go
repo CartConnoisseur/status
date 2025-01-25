@@ -2,15 +2,22 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"os/user"
 	"strings"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
+
+type response struct {
+	Msg       string `json:"msg"`
+	Timestamp int64  `json:"timestamp"`
+}
 
 func main() {
 	var msg string = ""
@@ -42,6 +49,33 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		username, password, ok := r.BasicAuth()
+		if ok {
+			err := bcrypt.CompareHashAndPassword(userHash, []byte(username+password))
+			if err != nil {
+				deny(w)
+				return
+			}
+
+			res := response{
+				Msg:       msg,
+				Timestamp: time.Now().Unix(),
+			}
+
+			json, err := json.Marshal(res)
+			if err != nil {
+				http.Error(w, "Failed create JSON body", http.StatusInternalServerError)
+				return
+			}
+
+			w.Write(json)
+			return
+		}
+
+		deny(w)
+	})
+
+	http.HandleFunc("/raw", func(w http.ResponseWriter, r *http.Request) {
 		username, password, ok := r.BasicAuth()
 		if ok {
 			err := bcrypt.CompareHashAndPassword(userHash, []byte(username+password))
