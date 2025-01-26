@@ -21,7 +21,7 @@ Requirements
 - go >= 1.22.5
 
 Instructions:
-1. Clone the repository
+1. Clone the repo
 ```bash
 git clone https://github.com/CartConnoisseur/status
 cd status
@@ -31,7 +31,7 @@ cd status
 go mod tidy
 ```
 
-3. Compile code
+3. Compile
 ```bash
 go build -o status
 ```
