@@ -4,7 +4,7 @@ Just something I threw together real quick for an incredibly specific and niche 
 
 ## Usage
 - Create `~/.status/auth`
-- Run the server
+- Run the server (see compilation instructions below)
 - Make requests to `/generate-hash` to create user and admin hashes
     - With cURL: `curl -u username:password <address>/generate-hash`
 - Put generated hashes into `~/.status/auth`
@@ -36,4 +36,4 @@ go mod tidy
 go build -o status
 ```
 
-The server can then be run via `./status`.
+The server can then be run via `./status <port>`.
