@@ -174,7 +174,6 @@ func main() {
 			timestamp = time.Now().Unix()
 			update.Exec(string(buf), timestamp, username)
 
-			log.Print(string(buf))
 			w.Write([]byte("success"))
 			return
 		}
@@ -227,6 +226,10 @@ func main() {
 		deny(w)
 	})
 
+	if len(os.Args) != 2 {
+		log.Fatal("Usage: status <port>")
+		return
+	}
 	log.Fatal(http.ListenAndServe(":"+os.Args[1], nil))
 }
 
