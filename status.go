@@ -21,6 +21,7 @@ type response struct {
 
 func main() {
 	var msg string = ""
+	var timestamp int64 = 0
 	var adminHash []byte
 	var userHash []byte
 
@@ -59,7 +60,7 @@ func main() {
 
 			res := response{
 				Msg:       msg,
-				Timestamp: time.Now().Unix(),
+				Timestamp: timestamp,
 			}
 
 			json, err := json.Marshal(res)
@@ -107,8 +108,10 @@ func main() {
 					return
 				}
 
-				log.Print(string(buf))
 				msg = string(buf)
+				timestamp = time.Now().Unix()
+
+				log.Print(string(buf))
 				w.Write([]byte("success"))
 				return
 			}
