@@ -30,7 +30,12 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	file, err := os.Open(user.HomeDir + "/.status/auth")
+	var path string = user.HomeDir + "/.status/auth"
+	if len(os.Args) > 2 {
+		path = os.Args[2]
+	}
+
+	file, err := os.Open(path)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
